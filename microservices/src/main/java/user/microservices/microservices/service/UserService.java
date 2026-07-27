@@ -17,4 +17,6 @@ public interface UserService {
     List<User> findAllUsers();
 
     User registerUser(RegistrationRequest request);
+
+    void sendEmailUser(User u, String code);
 }

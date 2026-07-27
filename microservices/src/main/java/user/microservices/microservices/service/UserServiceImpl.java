@@ -17,6 +17,7 @@ import user.microservices.microservices.service.exceptions.EmailAlreadyExistsExc
 import user.microservices.microservices.service.register.RegistrationRequest;
 import user.microservices.microservices.service.register.VerificationToken;
 import user.microservices.microservices.service.register.VerificationTokenRepository;
+import user.microservices.microservices.util.EmailSender;
 
 @Transactional
 @Service
@@ -25,13 +26,15 @@ public class UserServiceImpl implements UserService {
     final RoleRepository roleRep;
     final BCryptPasswordEncoder bCryptPasswordEncoder;
     final VerificationTokenRepository verificationTokenRepo;
+    final EmailSender emailSender;
 
     UserServiceImpl(UserRepository userRep, RoleRepository roleRep, BCryptPasswordEncoder bCryptPasswordEncoder,
-            VerificationTokenRepository verificationTokenRepo) {
+            VerificationTokenRepository verificationTokenRepo, EmailSender emailSender) {
         this.userRep = userRep;
         this.roleRep = roleRep;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.verificationTokenRepo = verificationTokenRepo;
+        this.emailSender = emailSender;
     }
 
     @Override
@@ -87,6 +90,9 @@ public class UserServiceImpl implements UserService {
         VerificationToken token = new VerificationToken(code, newUser);
         verificationTokenRepo.save(token);
 
+        // envoyer par email pour valider l'email de l'utilisateur
+        sendEmailUser(newUser, token.getToken());
+
         return userRep.save(newUser);
     }
 
@@ -95,6 +101,12 @@ public class UserServiceImpl implements UserService {
         Integer code = 100000 + random.nextInt(900000);
 
         return code.toString();
+    }
+
+    public void sendEmailUser(User u, String code) {
+        String emailBody = "Bonjour " + "<h1>" + u.getUsername() + "</h1>" +
+                " Votre code de validation est " + "<h1>" + code + "</h1>";
+        emailSender.sendEmail(u.getEmail(), emailBody);
     }
 
 }
