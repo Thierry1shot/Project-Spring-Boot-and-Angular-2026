@@ -1,9 +1,13 @@
 package user.microservices.microservices.security;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import user.microservices.microservices.entities.User;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -64,5 +69,27 @@ public class JWTAuthenticationFilter extends
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 24 * 60 * 60 * 1000))
                 .sign(Algorithm.HMAC256("test@test.com"));
         response.addHeader("Authorization", jwt);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
+            HttpServletResponse response, AuthenticationException failed)
+            throws IOException, ServletException {
+        if (failed instanceof DisabledException) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType("application/json");
+            Map<String, Object> data = new HashMap<>();
+
+            data.put("errorCause", "disabled");
+            data.put("message", "L'utilisateur est désactivé !");
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(data);
+            PrintWriter writer = response.getWriter();
+            writer.println(json);
+            writer.flush();
+
+        } else {
+            super.unsuccessfulAuthentication(request, response, failed);
+        }
     }
 }

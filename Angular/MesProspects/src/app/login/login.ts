@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { User } from '../model/user.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,8 +14,11 @@ export class Login implements OnInit {
   user = new User();
   //erreur = 0;
   err: number = 0;
+  message: string = "login ou mot de passe erronés..";
+
   constructor(private authService: Auth,
-    private router: Router) { }
+    private router: Router,
+    private cdr: ChangeDetectorRef) { }
 
 
   ngOnInit() {
@@ -38,6 +41,9 @@ export class Login implements OnInit {
       },
       error: (err: any) => {
         this.err = 1;
+        if (err.error.errorCause == 'disabled')
+          this.message = "Utilisateur désactivé, Veuillez contacter votre Administrateur";
+        this.cdr.detectChanges();
       }
     });
   }

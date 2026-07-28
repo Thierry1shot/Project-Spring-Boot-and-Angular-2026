@@ -1,6 +1,7 @@
 package user.microservices.microservices.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -14,6 +15,8 @@ import user.microservices.microservices.entities.User;
 import user.microservices.microservices.repos.RoleRepository;
 import user.microservices.microservices.repos.UserRepository;
 import user.microservices.microservices.service.exceptions.EmailAlreadyExistsException;
+import user.microservices.microservices.service.exceptions.ExpiredTokenException;
+import user.microservices.microservices.service.exceptions.InvalidTokenException;
 import user.microservices.microservices.service.register.RegistrationRequest;
 import user.microservices.microservices.service.register.VerificationToken;
 import user.microservices.microservices.service.register.VerificationTokenRepository;
@@ -109,4 +112,21 @@ public class UserServiceImpl implements UserService {
         emailSender.sendEmail(u.getEmail(), emailBody);
     }
 
+    @Override
+    public User validateToken(String code) {
+        VerificationToken token = verificationTokenRepo.findByToken(code);
+        if (token == null) {
+            throw new InvalidTokenException("Invalid Token");
+        }
+
+        User user = token.getUser();
+        Calendar calendar = Calendar.getInstance();
+        if ((token.getExpirationTime().getTime() - calendar.getTime().getTime()) <= 0) {
+            verificationTokenRepo.delete(token);
+            throw new ExpiredTokenException("expired Token");
+        }
+        user.setEnabled(true);
+        userRep.save(user);
+        return user;
+    }
 }

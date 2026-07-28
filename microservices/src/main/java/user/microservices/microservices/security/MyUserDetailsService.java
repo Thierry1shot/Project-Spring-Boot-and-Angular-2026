@@ -26,10 +26,11 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Utilisateur introuvable !");
         List<GrantedAuthority> auths = new ArrayList<>();
         user.getRoles().forEach(role -> {
-            GrantedAuthority auhority = new SimpleGrantedAuthority(role.getRole());
-            auths.add(auhority);
+            GrantedAuthority authority = new SimpleGrantedAuthority(role.getRole());
+            auths.add(authority);
         });
         // User de Spring
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), auths);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                user.getEnabled(), true, true, true, auths);
     }
 }
