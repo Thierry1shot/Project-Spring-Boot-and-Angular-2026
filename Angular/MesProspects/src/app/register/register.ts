@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../model/user.model';
 import { Auth } from '../services/auth';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,10 @@ export class Register implements OnInit {
   confirmPassword?: string;
   myForm!: FormGroup;
   err: any;
-  constructor(private formBuilder: FormBuilder, private AuthService: Auth, private cdr: ChangeDetectorRef, private router: Router) { }
+  loading: boolean = false;
+  constructor(private formBuilder: FormBuilder, private AuthService: Auth, private cdr: ChangeDetectorRef, private router: Router,
+    private toastr: ToastrService
+  ) { }
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       username: ['', [Validators.required]],
@@ -26,14 +30,19 @@ export class Register implements OnInit {
     });
   }
   onRegister() {
+    this.loading = true;
+    this.cdr.detectChanges();
     this.AuthService.registerUser(this.user).subscribe({
       next: (res) => {
         this.AuthService.setRegistredUser(this.user);
+        this.loading = false;
         this.cdr.detectChanges();
-        alert("veillez confirmer votre email");
+        //alert("veillez confirmer votre email");
+        this.toastr.success('veillez confirmer votre email', 'Confirmation');
         this.router.navigate(["/verifEmail"]);
       },
       error: (err: any) => {
+        this.loading = false;
         if (err.status = 400) {
           this.err = err.error.message;
           this.cdr.detectChanges();

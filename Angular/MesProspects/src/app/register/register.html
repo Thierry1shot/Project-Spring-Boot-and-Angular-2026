@@ -71,6 +71,13 @@
                     </span>
                     }
                 </div>
+                @if(loading){
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                }
                 <button type="button" [disabled]="myForm.invalid" class="btn btn-success"
                     (click)="onRegister()">S'insrire</button>
                 <p>vous avez un compte? <a routerLink="/login">se connecter </a></p>
