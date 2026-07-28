@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../model/user.model';
 import { Auth } from '../services/auth';
@@ -16,7 +16,7 @@ export class Register implements OnInit {
   confirmPassword?: string;
   myForm!: FormGroup;
   err: any;
-  constructor(private formBuilder: FormBuilder, private AuthService: Auth, private cdr: ChangeDetectorRef) { }
+  constructor(private formBuilder: FormBuilder, private AuthService: Auth, private cdr: ChangeDetectorRef, private router: Router) { }
   ngOnInit(): void {
     this.myForm = this.formBuilder.group({
       username: ['', [Validators.required]],
@@ -28,9 +28,10 @@ export class Register implements OnInit {
   onRegister() {
     this.AuthService.registerUser(this.user).subscribe({
       next: (res) => {
-        alert("veillez confirmer votre email");
+        this.AuthService.setRegistredUser(this.user);
         this.cdr.detectChanges();
-        // this.router.navigate(["/verifEmail",this.user.email]);
+        alert("veillez confirmer votre email");
+        this.router.navigate(["/verifEmail"]);
       },
       error: (err: any) => {
         if (err.status = 400) {

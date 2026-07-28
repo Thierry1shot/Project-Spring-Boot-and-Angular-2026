@@ -12,6 +12,8 @@ export class Auth {
   public isloggedIn: Boolean = false;
   public roles!: string[];
   private helper = new JwtHelperService();
+  public regitredUser: User = new User();
+
 
   apiURL: string = 'http://localhost:8081/utilisateur';
   token!: string;
@@ -99,4 +101,18 @@ export class Auth {
     return this.http.post<User>(this.apiURL + '/register', user,
       { observe: 'response' });
   }
+
+  setRegistredUser(user: User) {
+    this.regitredUser = user;
+  }
+
+  getRegistredUser() {
+    return this.regitredUser;
+  }
+
+  validateEmail(code: string) {
+    return this.http.get<User>(this.apiURL + '/verifyEmail/' + code);
+  }
+
+
 }
