@@ -22,18 +22,20 @@ The projects illustrate the implementation of common enterprise application feat
 - Git
 
 ## Repository Structure
-
 Each folder focuses on a specific concept or technology.
+The repository is organized as follows:
 
-Examples include:
+demo/ — Handles non‑user data and general application logic unrelated to user accounts.
 
-- Spring Boot CRUD applications
-- REST API development
-- Database persistence with Spring Data JPA
-- JWT authentication
-- Angular client applications
-- HTTP communication with HttpClient
-- Authentication and route protection
+microservices/ — Manages user‑related data and services (accounts, persistence, interactions).
+
+Angular/
+
+Mesprospects/ — Main Angular front‑end application (UI, components, services).
+
+DataBinding/ — Small demonstration module showcasing Angular data binding concepts.
+
+These folders illustrate different aspects of full‑stack development, from backend microservices to frontend UI and data binding.
 
 ## Skills Demonstrated
 
