@@ -2,13 +2,17 @@
 
 ## Overview
 
-This repository contains the source code I developed during my 2026 internship at Formapedia.
+This repository contains the source code I developed during my 2026 internship at **Formapedia**.
 
-The goal was to design and implement practical examples used in a complete training program covering modern Java Web development with Spring Boot and Angular.
+The objective of this internship was to design and develop practical examples used in a complete training program dedicated to modern Java Web development with **Spring Boot** and **Angular**.
 
-The projects illustrate the implementation of common enterprise application features through progressive examples.
+In addition to developing these applications, I designed and recorded technical training videos explaining the implementation of the different concepts covered throughout the course.
 
-## Topics Covered
+The projects illustrate the implementation of common enterprise application features through progressive examples, from basic CRUD operations to secure full-stack applications.
+
+---
+
+## Technologies Covered
 
 - Spring Boot
 - Spring Data JPA
@@ -21,41 +25,60 @@ The projects illustrate the implementation of common enterprise application feat
 - Layered Architecture
 - Git
 
+---
+
 ## Repository Structure
-Each folder focuses on a specific concept or technology.
-The repository is organized as follows:
 
-demo/ — Handles non‑user data and general application logic unrelated to user accounts.
+Each folder focuses on a specific concept or application.
 
-microservices/ — Manages user‑related data and services (accounts, persistence, interactions).
+### Backend
 
-Angular/
+- **demo/** – General Spring Boot examples and application logic.
+- **microservices/** – User management, persistence, authentication and related backend services.
 
-Mesprospects/ — Main Angular front‑end application (UI, components, services).
+### Frontend
 
-DataBinding/ — Small demonstration module showcasing Angular data binding concepts.
+- **Angular/Mesprospects/** – Main Angular application (components, services, routing, authentication, HTTP communication).
+- **Angular/DataBinding/** – Small project demonstrating Angular data binding concepts.
 
-These folders illustrate different aspects of full‑stack development, from backend microservices to frontend UI and data binding.
+Together, these projects demonstrate the development of a complete full-stack application using Spring Boot and Angular.
+
+---
 
 ## Skills Demonstrated
 
 - Full-stack Web development
+- Spring Boot application development
 - REST API design
-- Secure authentication with JWT
-- Database integration
+- Database integration with Spring Data JPA
+- Secure authentication using Spring Security & JWT
 - Angular frontend development
-- Software architecture
+- Client/server communication with HttpClient
+- Layered software architecture
 - Git version control
+- Technical communication and knowledge sharing
 
-## Context
+---
 
-This repository was created as part of my internship at **Formapedia**.
+## Internship Context
 
-The applications were developed as educational material to support technical training sessions and video tutorials on Spring Boot and Angular.
+This repository was created during my internship at **Formapedia**.
+
+The applications were developed as educational material to support:
+
+- hands-on practical exercises;
+- technical training sessions;
+- video tutorials explaining Spring Boot and Angular concepts;
+- progressive learning modules for future trainees.
+
+The objective was not only to build working applications, but also to make them clear, educational and easy to understand for learners.
+
+---
 
 ## Author
 
-Thierry QUAN
-Engineering Student – ENSEEIHT
-Computer Science & Telecommunications
+**Thierry QUAN**
+
+Engineering Student – ENSEEIHT  
+Computer Science & Telecommunications  
 Specialization: Image Processing & Multimedia
